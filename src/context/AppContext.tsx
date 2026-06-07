@@ -1,9 +1,9 @@
 /**
- * Chromate — The Personal Canvas Context
+ * Chromate: The Personal Canvas Context
  * ------------------------------------------------------------------
  * The application's global memory. It holds the user's analyzed season,
  * their curated roster of luxury houses, and their virtual closet of
- * scanned garments — and it transparently persists every mutation to
+ * scanned garments, and it transparently persists every mutation to
  * `localStorage` so the experience resumes, flawless, on reload.
  *
  * Consumers should reach for the `useAppContext` hook rather than the
@@ -48,7 +48,7 @@ export interface VirtualClosetItem {
 
 /**
  * A mock authenticated session. Chromate's auth is intentionally a
- * façade for the prototype — enough to gate the dossier and persist
+ * façade for the prototype, enough to gate the dossier and persist
  * across reloads, without any real credential handling.
  */
 export interface UserSession {
@@ -159,7 +159,7 @@ function loadState(): AppState {
 
 /** The public API exposed to every consumer of the canvas context. */
 export interface AppContextValue extends AppState {
-  /** Convenience flag — true when a session is open. */
+  /** Convenience flag, true when a session is open. */
   isAuthenticated: boolean;
   /** Open the archive under an email (mock sign-up / login). */
   login: (email: string) => void;

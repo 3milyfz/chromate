@@ -1,7 +1,7 @@
 import type { ColorSwatch } from '@/types/color';
 
 /**
- * A single debossed circular swatch — a sunken cutout in the page, the
+ * A single debossed circular swatch, a sunken cutout in the page, the
  * curated name beneath it, and its razor-sharp Hex coordinate.
  * Mirrors the physical paint-chip plates of the reference imagery.
  */

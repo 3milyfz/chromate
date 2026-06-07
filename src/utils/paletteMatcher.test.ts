@@ -5,7 +5,7 @@ import {
 } from '@/utils/paletteMatcher';
 import { SEASONS_MATRIX } from '@/data/seasons';
 
-describe('analyzeColorAgainstSeason — validation', () => {
+describe('analyzeColorAgainstSeason, validation', () => {
   it('throws on an unknown season id', () => {
     expect(() => analyzeColorAgainstSeason(40, 40, 30, 'no_such_season')).toThrow();
   });
@@ -16,7 +16,7 @@ describe('analyzeColorAgainstSeason — validation', () => {
   });
 });
 
-describe('analyzeColorAgainstSeason — matches', () => {
+describe('analyzeColorAgainstSeason, matches', () => {
   it('passes a color at the center of Dark Autumn with a near-perfect score', () => {
     const result = analyzeColorAgainstSeason(40, 43, 30, 'dark_autumn', 'Espresso Brown');
 
@@ -50,7 +50,7 @@ describe('analyzeColorAgainstSeason — matches', () => {
   });
 });
 
-describe('analyzeColorAgainstSeason — near misses', () => {
+describe('analyzeColorAgainstSeason, near misses', () => {
   it('fails a cool, light, muted color against Dark Autumn', () => {
     const result = analyzeColorAgainstSeason(220, 25, 55, 'dark_autumn', 'Powder Blue');
 
@@ -81,7 +81,7 @@ describe('analyzeColorAgainstSeason — near misses', () => {
   });
 });
 
-describe('analyzeColorAgainstSeasons — match any of several', () => {
+describe('analyzeColorAgainstSeasons, match any of several', () => {
   it('matches when the color fits ANY selected season', () => {
     // A deep cool jewel tone: fails Dark Autumn (warm) but fits Dark Winter.
     const result = analyzeColorAgainstSeasons(250, 70, 30, [
@@ -95,7 +95,7 @@ describe('analyzeColorAgainstSeasons — match any of several', () => {
   });
 
   it('reports no match when the color fits none of the selected seasons', () => {
-    // Light, cool, muted — wrong for both deep selections.
+    // Light, cool, muted, wrong for both deep selections.
     const result = analyzeColorAgainstSeasons(220, 25, 80, [
       'dark_autumn',
       'dark_winter',
@@ -137,8 +137,8 @@ describe('analyzeColorAgainstSeasons — match any of several', () => {
   it('classifies warm near-red browns as Dark Autumn and matches them', () => {
     // Two real-world swatches the user hit: #453130 and #391213.
     for (const [h, s, l] of [
-      [3, 18, 23], // #453130 — fails saturation floor, matches via classification
-      [358, 52, 15], // #391213 — passes Dark Autumn's boundaries outright
+      [3, 18, 23], // #453130, fails saturation floor, matches via classification
+      [358, 52, 15], // #391213, passes Dark Autumn's boundaries outright
     ] as const) {
       const result = analyzeColorAgainstSeasons(h, s, l, ['dark_autumn']);
       expect(result.classifiedSeasonId).toBe('dark_autumn');
@@ -148,7 +148,7 @@ describe('analyzeColorAgainstSeasons — match any of several', () => {
   });
 
   it('still rejects a genuinely cool color against Autumn selections', () => {
-    // Cool, muted, medium color — its home is a cool season, not Autumn.
+    // Cool, muted, medium color, its home is a cool season, not Autumn.
     const result = analyzeColorAgainstSeasons(220, 30, 50, [
       'dark_autumn',
       'true_autumn',
@@ -171,7 +171,7 @@ describe('analyzeColorAgainstSeasons — match any of several', () => {
   });
 });
 
-describe('analyzeColorAgainstSeason — score bounds', () => {
+describe('analyzeColorAgainstSeason, score bounds', () => {
   it('always returns a score within [0, 100] for every season', () => {
     for (const id of Object.keys(SEASONS_MATRIX)) {
       for (const [h, s, l] of [

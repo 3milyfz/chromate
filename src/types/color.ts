@@ -1,5 +1,5 @@
 /**
- * Chromate — Color Science Type System
+ * Chromate: Color Science Type System
  * ------------------------------------------------------------------
  * The vocabulary of the platform. Every structure here is grounded in
  * measurable color science (the Munsell triad of Hue, Value, Chroma,
@@ -18,9 +18,9 @@
 /**
  * A single point in the HSL color space.
  *
- * - `h` — Hue, the angular position on the color wheel.        `0 – 360°`
- * - `s` — Saturation, the purity of the hue (Munsell "Chroma"). `0 – 100%`
- * - `l` — Lightness, the luminous value (Munsell "Value").      `0 – 100%`
+ * - `h`: Hue, the angular position on the color wheel.        `0 – 360°`
+ * - `s`: Saturation, the purity of the hue (Munsell "Chroma"). `0 – 100%`
+ * - `l`: Lightness, the luminous value (Munsell "Value").      `0 – 100%`
  */
 export interface HSL {
   /** Hue in degrees, `0 – 360`. */
@@ -59,7 +59,7 @@ export interface HSLBoundaries {
  * ------------------------------------------------------------------ */
 
 /**
- * A named color — the atomic unit of a curated palette.
+ * A named color, the atomic unit of a curated palette.
  *
  * `name` is intentionally editorial ("Smoked Olive", "Crushed Velvet"):
  * the language is part of the product, not decoration.
@@ -101,7 +101,7 @@ export interface SeasonalPalette {
   /** Human-facing title, e.g. `Dark Autumn`. */
   name: string;
   /**
-   * A short, premium meditation on the season's full visual essence —
+   * A short, premium meditation on the season's full visual essence:
    * the interplay of contrast, hair, eyes, and overall presence.
    */
   auraDescription: string;

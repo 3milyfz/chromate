@@ -1,16 +1,16 @@
 /**
- * Chromate — The Scientific Elimination Algorithm
+ * Chromate: The Scientific Elimination Algorithm
  * ------------------------------------------------------------------
  * Evaluates a single measured color (in HSL) against a season's defined
  * volume in `SEASONS_MATRIX`, executing the three-step seasonal filter:
  *
- *   1. Temperature  (Hue)        — warm vs. cool, with olive/teal grace.
- *   2. Value        (Lightness)  — depth threshold.
- *   3. Chroma       (Saturation) — muted vs. vibrant clarity.
+ *   1. Temperature  (Hue)       , warm vs. cool, with olive/teal grace.
+ *   2. Value        (Lightness) , depth threshold.
+ *   3. Chroma       (Saturation), muted vs. vibrant clarity.
  *
  * It returns a verdict object with a pass/fail breakdown, a 0–100 score
  * measuring proximity to the season's ideal center, and a friendly,
- * trait-aware sentence — celebratory on a match, constructive on a miss.
+ * trait-aware sentence, celebratory on a match, constructive on a miss.
  */
 
 import type { Range, SeasonalPalette } from '@/types/color';
@@ -76,7 +76,7 @@ function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
 
-/** Midpoint of a range — a season's "ideal" along that axis. */
+/** Midpoint of a range, a season's "ideal" along that axis. */
 function center(range: Range): number {
   return (range.min + range.max) / 2;
 }
@@ -125,7 +125,7 @@ function isTeal(h: number): boolean {
 /**
  * Earthy red-browns, rusts and brick tones sit right on the red wrap-around
  * (hues near 0° / 360°). At low-to-moderate saturation these are warm browns
- * — they belong to the warm families (Autumn, Spring), not the cool reds and
+ *, they belong to the warm families (Autumn, Spring), not the cool reds and
  * berries. Capping saturation keeps vivid cool fuchsias and pure reds out, so
  * genuinely cool colors are unaffected.
  */
@@ -144,7 +144,7 @@ interface AxisEvaluation {
 }
 
 /**
- * Step 1 — Temperature. A hue passes when it lands inside the season's
+ * Step 1: Temperature. A hue passes when it lands inside the season's
  * hue window, OR sits in the broad temperature-consistent zone, OR
  * qualifies for an olive/teal exception (Autumn & Winter only).
  */
@@ -189,7 +189,7 @@ function evaluateHue(
   return { pass, proximity };
 }
 
-/** Steps 2 & 3 — a generic linear-axis test for lightness / saturation. */
+/** Steps 2 & 3, a generic linear-axis test for lightness / saturation. */
 function evaluateLinearAxis(value: number, range: Range): AxisEvaluation {
   const pass = value >= range.min && value <= range.max;
   const proximity = axisProximity(Math.abs(value - center(range)), range);
@@ -270,7 +270,7 @@ function findBestSeason(h: number, s: number, l: number): SeasonalPalette {
  * Verdict authoring
  * ------------------------------------------------------------------ */
 
-/** Pretty label for a swatch — uses the provided name or a hue family. */
+/** Pretty label for a swatch, uses the provided name or a hue family. */
 function describeColor(h: number, colorName?: string): string {
   if (colorName && colorName.trim()) return colorName.trim();
 
@@ -289,7 +289,7 @@ function craftMatchVerdict(
   season: SeasonalPalette,
 ): string {
   return (
-    `Perfect — ${color} aligns beautifully with your ${season.dominantTrait}, ` +
+    `Perfect. ${color} aligns beautifully with your ${season.dominantTrait}, ` +
     `${season.secondaryTrait.toLowerCase()} essence. It belongs in your ${season.name} ` +
     `palette and will read as effortless, intentional, and entirely you.`
   );
@@ -328,14 +328,14 @@ function craftNearMissVerdict(
 
   if (best.id !== target.id) {
     return (
-      `Not quite — against ${target.name}, ${color} is a near miss because ${reasonText}. ` +
+      `Not quite. Against ${target.name}, ${color} is a near miss because ${reasonText}. ` +
       `It actually harmonizes with ${best.name}, a sister season. Wear it as a considered ` +
-      `accent — away from the face, or paired with a true ${target.name} neutral — and it can still sing.`
+      `accent, away from the face, or paired with a true ${target.name} neutral, and it can still sing.`
     );
   }
 
   return (
-    `A near miss — ${color} brushes the edge of your ${target.name} palette because ${reasonText}. ` +
+    `A near miss. ${color} brushes the edge of your ${target.name} palette because ${reasonText}. ` +
     `Keep it for accents rather than statement pieces, and let your core ${target.name} tones lead.`
   );
 }
@@ -345,7 +345,7 @@ function craftNearMissVerdict(
  * ------------------------------------------------------------------ */
 
 /**
- * The outcome of testing one color against a *set* of selected seasons —
+ * The outcome of testing one color against a *set* of selected seasons:
  * the user may belong to more than one. A color is a match if it fits ANY
  * of them.
  */
@@ -355,7 +355,7 @@ export interface MultiSeasonAnalysis {
   /** Ids of every selected season the color genuinely fits (may be empty). */
   matchedSeasonIds: string[];
   /**
-   * The strongest selected season for this color — the matched season with
+   * The strongest selected season for this color, the matched season with
    * the highest score, or (if none match) the closest selected season.
    */
   bestSeasonId: string | null;
@@ -419,7 +419,7 @@ export function analyzeColorAgainstSeason(
  *
  * The color counts as a match if it fits ANY of the selected seasons. The
  * result reports which selected seasons it matched, the strongest of them,
- * and — independently — the season it most naturally belongs to overall.
+ * and, independently, the season it most naturally belongs to overall.
  *
  * Unknown ids are ignored. An empty (or fully-unknown) selection yields a
  * non-match whose `classified*` fields still describe the color's home

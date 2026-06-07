@@ -1,12 +1,12 @@
 /**
- * Chromate — The 12-Season Color Matrix
+ * Chromate: The 12-Season Color Matrix
  * ------------------------------------------------------------------
  * A scientific atlas. Each season is a discrete volume in HSL space,
  * derived from the four governing axes of seasonal color theory:
  *
- *   • Value        — Lightness   (dark ⟷ light)
- *   • Chroma       — Saturation  (bright ⟷ muted/soft)
- *   • Temperature  — Hue         (warm ⟷ cool)
+ *   • Value       : Lightness   (dark ⟷ light)
+ *   • Chroma      : Saturation  (bright ⟷ muted/soft)
+ *   • Temperature : Hue         (warm ⟷ cool)
  *
  * The four anchor seasons (Dark Autumn, Dark Winter, Bright Spring,
  * Soft Summer) use the boundaries specified by the science team. The
@@ -14,15 +14,15 @@
  * occupies a distinct, non-degenerate region while flowing naturally
  * into its neighbours around the seasonal wheel.
  *
- * Signature palettes intentionally span the hue wheel — a season is a
- * shared temperature, value and chroma, not a single hue — so the swatch
+ * Signature palettes intentionally span the hue wheel, a season is a
+ * shared temperature, value and chroma, not a single hue, so the swatch
  * hexes are not constrained to the detection `boundaries` above.
  */
 
 import type { SeasonalPalette, SeasonMatrix } from '@/types/color';
 
 /* ================================================================== *
- * AUTUMN — warm, grounded, the chroma of pressed pigment and patina.
+ * AUTUMN, warm, grounded, the chroma of pressed pigment and patina.
  * ================================================================== */
 
 /** Deep, smoldering, low-key warmth. The science-team anchor for Autumn. */
@@ -30,7 +30,7 @@ const DARK_AUTUMN: SeasonalPalette = {
   id: 'dark_autumn',
   name: 'Dark Autumn',
   auraDescription:
-    'Deep, warm coloring — dark hair and eyes against skin with golden warmth. Rich and low-contrast.',
+    'Deep, warm coloring, dark hair and eyes against skin with golden warmth. Rich and low-contrast.',
   dominantTrait: 'dark',
   secondaryTrait: 'Warm undertone with high tonal depth',
   boundaries: {
@@ -53,7 +53,7 @@ const DARK_AUTUMN: SeasonalPalette = {
   ],
 };
 
-/** The purest expression of warmth — rich, saturated, fully autumnal. */
+/** The purest expression of warmth, rich, saturated, fully autumnal. */
 const TRUE_AUTUMN: SeasonalPalette = {
   id: 'true_autumn',
   name: 'True Autumn',
@@ -81,7 +81,7 @@ const TRUE_AUTUMN: SeasonalPalette = {
   ],
 };
 
-/** Warmth at its most luminous — autumn drifting toward spring's light. */
+/** Warmth at its most luminous, autumn drifting toward spring's light. */
 const WARM_AUTUMN: SeasonalPalette = {
   id: 'warm_autumn',
   name: 'Warm Autumn',
@@ -110,7 +110,7 @@ const WARM_AUTUMN: SeasonalPalette = {
 };
 
 /* ================================================================== *
- * SPRING — warm, clear, high light. The chroma of fresh sap and sun.
+ * SPRING, warm, clear, high light. The chroma of fresh sap and sun.
  * ================================================================== */
 
 /** Maximum clarity and saturation. The science-team anchor for Spring. */
@@ -169,7 +169,7 @@ const TRUE_SPRING: SeasonalPalette = {
   ],
 };
 
-/** Delicate, warm, and high-key — spring at its most weightless. */
+/** Delicate, warm, and high-key, spring at its most weightless. */
 const LIGHT_SPRING: SeasonalPalette = {
   id: 'light_spring',
   name: 'Light Spring',
@@ -198,7 +198,7 @@ const LIGHT_SPRING: SeasonalPalette = {
 };
 
 /* ================================================================== *
- * SUMMER — cool, hazed, soft. The chroma of fog, slate and dusk.
+ * SUMMER, cool, hazed, soft. The chroma of fog, slate and dusk.
  * ================================================================== */
 
 /** Gentle, greyed, low-chroma cool. The science-team anchor for Summer. */
@@ -229,7 +229,7 @@ const SOFT_SUMMER: SeasonalPalette = {
   ],
 };
 
-/** The coolest, most balanced summer — true blue-based softness. */
+/** The coolest, most balanced summer, true blue-based softness. */
 const TRUE_SUMMER: SeasonalPalette = {
   id: 'true_summer',
   name: 'True Summer',
@@ -257,7 +257,7 @@ const TRUE_SUMMER: SeasonalPalette = {
   ],
 };
 
-/** Cool and high-key — summer rendered in pale, airy tints. */
+/** Cool and high-key, summer rendered in pale, airy tints. */
 const LIGHT_SUMMER: SeasonalPalette = {
   id: 'light_summer',
   name: 'Light Summer',
@@ -286,7 +286,7 @@ const LIGHT_SUMMER: SeasonalPalette = {
 };
 
 /* ================================================================== *
- * WINTER — cool, sharp, high contrast. The chroma of ice and lacquer.
+ * WINTER, cool, sharp, high contrast. The chroma of ice and lacquer.
  * ================================================================== */
 
 /** Deep, glacial, high-saturation cool. The science-team anchor for Winter. */
@@ -317,7 +317,7 @@ const DARK_WINTER: SeasonalPalette = {
   ],
 };
 
-/** The coolest, purest winter — saturated, blue-based, balanced in value. */
+/** The coolest, purest winter, saturated, blue-based, balanced in value. */
 const TRUE_WINTER: SeasonalPalette = {
   id: 'true_winter',
   name: 'True Winter',
@@ -345,7 +345,7 @@ const TRUE_WINTER: SeasonalPalette = {
   ],
 };
 
-/** Winter's high-clarity edge — cool, vivid, and luminous. */
+/** Winter's high-clarity edge, cool, vivid, and luminous. */
 const BRIGHT_WINTER: SeasonalPalette = {
   id: 'bright_winter',
   name: 'Bright Winter',

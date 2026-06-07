@@ -7,11 +7,11 @@ import {
 } from '@/data/seasonAesthetics';
 
 /**
- * SeasonBackdrop — the mood layer behind the open dossier.
+ * SeasonBackdrop, the mood layer behind the open dossier.
  *
  * The backdrop tracks the *actively viewed* season: clicking a season in the
  * dossier's palette index changes `activeSeason`, and this layer cross-fades
- * to that season's mood image. This keeps multi-season users in sync — the
+ * to that season's mood image. This keeps multi-season users in sync, the
  * background always reflects the season they're currently reading.
  *
  * A frosted-glass overlay (espresso tint + backdrop blur) sits on top so the

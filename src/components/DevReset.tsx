@@ -4,13 +4,13 @@ import { useAppContext } from '@/context/AppContext';
 /**
  * Dev-only reset control.
  *
- * A small, fixed-position panel — rendered only when `import.meta.env.DEV`
+ * A small, fixed-position panel, rendered only when `import.meta.env.DEV`
  * is true, so it is tree-shaken out of production builds entirely. It exposes
  * the two state resets that are otherwise unreachable from the UI:
  *
- *   • Pre-setup — keeps the mock session but clears the analyzed season,
+ *   • Pre-setup, keeps the mock session but clears the analyzed season,
  *     routing back through <SeasonOnboarding /> (i.e. "before setup").
- *   • Full wipe — reverts the whole canvas to defaults and seals the archive,
+ *   • Full wipe, reverts the whole canvas to defaults and seals the archive,
  *     returning to <EnvelopeLanding />.
  */
 export default function DevReset() {

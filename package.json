@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Chromate — avant-garde seasonal color analysis, grounded in the Munsell Color System and framed through editorial luxury.",
+  "description": "Chromate, avant-garde seasonal color analysis, grounded in the Munsell Color System and framed through editorial luxury.",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

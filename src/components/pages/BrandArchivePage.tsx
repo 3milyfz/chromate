@@ -3,7 +3,7 @@ import { useAppContext } from '@/context/AppContext';
 import { PageHeading } from '@/components/pages/PageHeading';
 
 /**
- * 04 / Brand Archive — the curated index of luxury houses the user keeps
+ * 04 / Brand Archive, the curated index of luxury houses the user keeps
  * on file, presented as a typeset directory with minimal add/remove.
  */
 export default function BrandArchivePage() {

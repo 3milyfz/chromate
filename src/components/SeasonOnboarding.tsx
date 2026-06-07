@@ -3,7 +3,7 @@ import { useAppContext } from '@/context/AppContext';
 import { SEASONS_LIST, SEASONS_MATRIX } from '@/data/seasons';
 
 /**
- * A concise, two-sentence meditation on each season's overall vibe — the
+ * A concise, two-sentence meditation on each season's overall vibe, the
  * essence and aura, distilled for the onboarding preview. These are kept
  * separate from the scientific `auraDescription` so the selection moment
  * stays light, fast, and editorial.
@@ -36,7 +36,7 @@ const FAMILIES: { label: string; key: string }[] = [
 ];
 
 /**
- * State 2 — The Immersive Canvas Selection.
+ * State 2: The Immersive Canvas Selection.
  *
  * Rendered only after authentication, while no season has been confirmed.
  * A completely open, blank museum-white canvas: a warm welcome, the
@@ -72,7 +72,7 @@ export default function SeasonOnboarding() {
   function confirm() {
     if (count === 0 || confirming) return;
     setConfirming(true);
-    // Let the fade-out play, then commit — App swaps in the dossier, which
+    // Let the fade-out play, then commit: App swaps in the dossier, which
     // carries its own fade-in, completing a clean cross-dissolve.
     window.setTimeout(() => {
       setSeasons(selected);
@@ -95,7 +95,7 @@ export default function SeasonOnboarding() {
           Select your season. Choose more than one if several apply.
         </p>
 
-        {/* The selection matrix — twelve seasons, grouped into family columns */}
+        {/* The selection matrix, twelve seasons, grouped into family columns */}
         <nav className="mt-16 grid w-full max-w-2xl grid-cols-2 gap-x-10 gap-y-12 sm:grid-cols-4">
           {FAMILIES.map((family) => {
             const members = SEASONS_LIST.filter((s) =>
@@ -121,7 +121,7 @@ export default function SeasonOnboarding() {
                         onClick={() => toggle(season.id)}
                         className="inline-flex items-center gap-2"
                       >
-                        {/* Selection indicator — a filled dot that always
+                        {/* Selection indicator, a filled dot that always
                             reserves its space to keep the columns aligned. */}
                         <span
                           className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
@@ -149,7 +149,7 @@ export default function SeasonOnboarding() {
           })}
         </nav>
 
-        {/* The dynamic snippet zone — reserved space avoids any layout jump */}
+        {/* The dynamic snippet zone, reserved space avoids any layout jump */}
         <div className="mt-14 flex min-h-[240px] w-full items-start justify-center">
           {previewSeason ? (
             <article
@@ -164,7 +164,7 @@ export default function SeasonOnboarding() {
                 {ESSENCE_SNIPPETS[previewSeason.id]}
               </p>
 
-              {/* Anchor colors — four flat circles, strictly separated */}
+              {/* Anchor colors, four flat circles, strictly separated */}
               <div className="mt-10 flex items-center justify-center gap-5">
                 {previewSeason.signatureColors.slice(0, 4).map((swatch) => (
                   <span
@@ -178,7 +178,7 @@ export default function SeasonOnboarding() {
 
               <p className="mt-9 font-sans text-[9.5px] uppercase tracking-[0.22em] text-stone/70">
                 {selected.includes(previewSeason.id)
-                  ? '✓ Selected — click to remove'
+                  ? '✓ Selected. Click to remove'
                   : 'Click to select'}
               </p>
             </article>
@@ -189,7 +189,7 @@ export default function SeasonOnboarding() {
           )}
         </div>
 
-        {/* Confirmation zone — acts on the full selected set */}
+        {/* Confirmation zone, acts on the full selected set */}
         <div className="mt-12 flex flex-col items-center gap-4">
           <p className="font-sans text-[10px] uppercase tracking-archive text-stone">
             {count === 0

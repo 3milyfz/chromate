@@ -7,7 +7,7 @@ import type { ColorSwatch } from '@/types/color';
 const FACETS = ['Lip', 'Cheek', 'Eye', 'Base'] as const;
 
 /**
- * 03 / Makeup Matcher — translates the season's signature plate into a
+ * 03 / Makeup Matcher, translates the season's signature plate into a
  * complexion edit, assigning curated tones to lip, cheek, eye and base.
  */
 export default function MakeupPage() {

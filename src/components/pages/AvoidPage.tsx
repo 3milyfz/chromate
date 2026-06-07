@@ -4,7 +4,7 @@ import { Swatch } from '@/components/SwatchPlate';
 import { PageHeading } from '@/components/pages/PageHeading';
 
 /**
- * 01 (reading) / Palette Notes — the complement to the canvas archive:
+ * 01 (reading) / Palette Notes, the complement to the canvas archive:
  * the disharmonious tones to keep out of the frame.
  */
 export default function AvoidPage() {
@@ -40,7 +40,7 @@ export default function AvoidPage() {
       <section className="mt-auto border-t border-ink/10 pt-7">
         <p className="caption text-stone">Dominant Trait</p>
         <p className="mt-2 font-serif text-2xl font-light italic text-ink">
-          {season.dominantTrait} — {season.secondaryTrait}
+          {season.dominantTrait} · {season.secondaryTrait}
         </p>
       </section>
     </div>

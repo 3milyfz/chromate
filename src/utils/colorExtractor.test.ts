@@ -21,7 +21,7 @@ function buildPixels(tuples: Array<[number, number, number, number, number]>): n
 
 /**
  * Paints a `width × height` RGBA grid. `paint(x, y)` returns an `[r,g,b]`
- * triplet (alpha is forced opaque) — handy for building synthetic scenes.
+ * triplet (alpha is forced opaque), handy for building synthetic scenes.
  */
 function buildGrid(
   width: number,
@@ -108,7 +108,7 @@ describe('isBackgroundPixel', () => {
   });
 
   it('flags the light near-neutral grey of a studio backdrop', () => {
-    // A typical product-shot background — light, hueless, but below 240.
+    // A typical product-shot background, light, hueless, but below 240.
     expect(isBackgroundPixel(235, 234, 233, 255)).toBe(true);
     expect(isBackgroundPixel(220, 221, 219, 255)).toBe(true);
   });
@@ -159,7 +159,7 @@ describe('extractDominantFromPixels', () => {
   });
 
   it('recovers garment color even when the backdrop fills most of the frame', () => {
-    // A tiny 4×4 garment lost in a large grey frame — only segmentation,
+    // A tiny 4×4 garment lost in a large grey frame, only segmentation,
     // not pixel-count voting, can recover it.
     const w = 28;
     const h = 28;

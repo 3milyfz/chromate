@@ -26,14 +26,14 @@
 
 ## Manifesto
 
-**Chromate** is an avant-garde seasonal color analysis studio. It treats your personal palette not as a quiz result, but as a compiled dossier — a leather-bound archive of the tones that belong to you, the ones that don't, and the garments you scan against both.
+**Chromate** is an avant-garde seasonal color analysis studio. It treats your personal palette not as a quiz result, but as a compiled dossier, a leather-bound archive of the tones that belong to you, the ones that don't, and the garments you scan against both.
 
 ---
 
 ## Features
 
 ### Your Palette
-A visual canvas archive for each confirmed season — aura description, dominant traits, and a debossed signature swatch plate of six curated tones. Switch between seasons from a left-page index.
+A visual canvas archive for each confirmed season, aura description, dominant traits, and a debossed signature swatch plate of six curated tones. Switch between seasons from a left-page index.
 
 ### Scanner File
 Drop an image of any color or garment onto a vellum zone. Chromate extracts the dominant color via canvas-based clustering, then runs it through a three-axis seasonal filter:
@@ -53,12 +53,12 @@ Each scan returns a classified season, and a trait-aware verdict. Scanned items 
 Chromate models seasonal color theory as discrete volumes in HSL space, governed by three scientific axes:
 
 ```
-Value        — Lightness   (dark ⟷ light)
-Chroma       — Saturation  (bright ⟷ muted)
-Temperature  — Hue         (warm ⟷ cool)
+Value       : Lightness   (dark ⟷ light)
+Chroma      : Saturation  (bright ⟷ muted)
+Temperature : Hue         (warm ⟷ cool)
 ```
 
-Four anchor seasons — **Dark Autumn**, **Dark Winter**, **Bright Spring**, **Soft Summer** — define the boundaries. The remaining eight are mathematically interpolated so every season occupies a distinct, non-degenerate region while flowing naturally around the seasonal wheel.
+Four anchor seasons (**Dark Autumn**, **Dark Winter**, **Bright Spring**, **Soft Summer**) define the boundaries. The remaining eight are mathematically interpolated so every season occupies a distinct, non-degenerate region while flowing naturally around the seasonal wheel.
 
 | Autumn | Spring | Summer | Winter |
 | :--- | :--- | :--- | :--- |
@@ -76,8 +76,8 @@ Four anchor seasons — **Dark Autumn**, **Dark Winter**, **Bright Spring**, **S
 | **Build** | Vite 5 |
 | **Styling** | Tailwind CSS with a custom archival design system |
 | **Typography** | Cormorant Garamond (serif) · Inter (sans) |
-| **Testing** | Vitest — color extraction & palette matching |
-| **Persistence** | `localStorage` — session, seasons, closet |
+| **Testing** | Vitest, color extraction & palette matching |
+| **Persistence** | `localStorage`, session, seasons, closet |
 
 ---
 
@@ -113,9 +113,9 @@ Open the URL Vite prints (typically `http://localhost:5173`). Unveil the envelop
 ```
 src/
 ├── components/
-│   ├── EnvelopeLanding.tsx    # State 1 — auth gate
-│   ├── SeasonOnboarding.tsx   # State 2 — season selection
-│   ├── Dossier.tsx            # State 3 — two-page spread
+│   ├── EnvelopeLanding.tsx    # State 1, auth gate
+│   ├── SeasonOnboarding.tsx   # State 2, season selection
+│   ├── Dossier.tsx            # State 3, two-page spread
 │   ├── SeasonBackdrop.tsx     # Seasonal mood imagery
 │   ├── SwatchPlate.tsx        # Debossed color swatches
 │   └── pages/                 # Dossier tab content

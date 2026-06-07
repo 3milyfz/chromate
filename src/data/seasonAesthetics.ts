@@ -1,7 +1,7 @@
 /**
- * Chromate — Seasonal Aesthetic Backdrops
+ * Chromate: Seasonal Aesthetic Backdrops
  * ------------------------------------------------------------------
- * A curated mood image for each of the twelve seasons — the "[season]
+ * A curated mood image for each of the twelve seasons, the "[season]
  * vibe" that lives behind the dossier under a frosted-glass overlay.
  *
  * Each entry maps a season `id` to a stable, royalty-free Unsplash photo
@@ -28,22 +28,22 @@ function unsplash(photoId: string, w = 1600): string {
  * grouped so each of the four families reads as its own world.
  */
 const SEASON_BACKDROP_PHOTOS: Record<string, string> = {
-  // AUTUMN — golden forests, pressed pigment, warm patina.
+  // AUTUMN, golden forests, pressed pigment, warm patina.
   dark_autumn: 'photo-1507371341162-763b5e419408',
   true_autumn: 'photo-1476231682828-37e571bc172f',
   warm_autumn: 'photo-1457369804613-52c61a468e7d',
 
-  // SPRING — fresh sap, blossom, clear sunlit color.
+  // SPRING, fresh sap, blossom, clear sunlit color.
   bright_spring: 'photo-1490750967868-88aa4486c946',
   true_spring: 'photo-1516233758813-a38d024919c5',
   light_spring: 'photo-1517299321609-52687d1bc55a',
 
-  // SUMMER — fog, slate, dusk; soft and hazed.
+  // SUMMER, fog, slate, dusk; soft and hazed.
   soft_summer: 'photo-1470071459604-3b5ec3a7fe05',
   true_summer: 'photo-1551582045-6ec9c11d8697',
   light_summer: 'photo-1485470733090-0aae1788d5af',
 
-  // WINTER — ice, lacquer, dramatic cool depth.
+  // WINTER, ice, lacquer, dramatic cool depth.
   dark_winter: 'photo-1483728642387-6c3bdd6c93e5',
   true_winter: 'photo-1547036967-23d11aacaee0',
   bright_winter: 'photo-1418985991508-e47386d96a71',
@@ -91,7 +91,7 @@ export function getSeasonAesthetics(
 }
 
 /* ------------------------------------------------------------------ *
- * Frosted-glass overlay — season-adaptive tint
+ * Frosted-glass overlay, season-adaptive tint
  * ------------------------------------------------------------------ */
 
 /**
@@ -116,21 +116,21 @@ export interface SeasonOverlay {
 type OverlayTier = 'airy' | 'soft' | 'deep';
 
 const OVERLAY_BY_TIER: Record<OverlayTier, SeasonOverlay> = {
-  // Light & cool — a bright linen frost; the image stays airy and luminous.
+  // Light & cool, a bright linen frost; the image stays airy and luminous.
   airy: {
     tint: 'bg-linen/35',
     vignette:
       'bg-[radial-gradient(circle_at_50%_38%,transparent_0%,rgba(43,30,25,0.14)_100%)]',
     isLight: true,
   },
-  // Warm/bright/mid — a gentle espresso veil, far lighter than before.
+  // Warm/bright/mid, a gentle espresso veil, far lighter than before.
   soft: {
     tint: 'bg-espresso/35',
     vignette:
       'bg-[radial-gradient(circle_at_50%_38%,transparent_0%,rgba(43,30,25,0.30)_100%)]',
     isLight: false,
   },
-  // Deep & dramatic — a richer espresso wash to hold contrast.
+  // Deep & dramatic, a richer espresso wash to hold contrast.
   deep: {
     tint: 'bg-espresso/55',
     vignette:
@@ -148,7 +148,7 @@ const DEFAULT_OVERLAY = OVERLAY_BY_TIER.soft;
  * The four families carry distinct "value" temperaments: every Summer reads
  * soft and hazy (airy), Winters run deep and dramatic, while Springs and
  * Autumns sit warm in the middle. The per-season `dominantTrait` overrides
- * this where it matters — explicitly `light` seasons go airy, `dark` ones go
+ * this where it matters, explicitly `light` seasons go airy, `dark` ones go
  * deep, and `bright` ones (e.g. Bright Winter) stay luminous rather than dark.
  */
 function overlayTierFor(seasonId: string): OverlayTier {
@@ -160,7 +160,7 @@ function overlayTierFor(seasonId: string): OverlayTier {
   if (trait === 'dark') return 'deep';
   if (trait === 'bright') return 'soft';
 
-  // Trait is warm / cool / muted — let the season family decide the value.
+  // Trait is warm / cool / muted, let the season family decide the value.
   if (seasonId.endsWith('summer')) return 'airy';
   if (seasonId.endsWith('winter')) return 'deep';
   return 'soft';

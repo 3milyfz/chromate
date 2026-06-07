@@ -17,7 +17,7 @@ const TABS: { key: TabKey; index: string; label: string }[] = [
 ];
 
 /**
- * State 2 — The Open Dossier.
+ * State 2: The Open Dossier.
  * A two-page, ring-bound spread on espresso leather. The left page holds
  * the Visual Canvas Archive; the right page is driven by the index tabs.
  */
@@ -37,7 +37,7 @@ export default function Dossier() {
       {/* Season-aesthetic mood image(s) behind a frosted-glass overlay. */}
       <SeasonBackdrop seasons={seasons} activeSeason={currentSeason} />
 
-      {/* Top scrim — keeps the light linen top-bar text readable on any
+      {/* Top scrim, keeps the light linen top-bar text readable on any
           overlay, including the airy washes used for light/cool seasons. */}
       <div className="pointer-events-none fixed inset-x-0 top-0 z-0 h-32 bg-gradient-to-b from-espresso/55 to-transparent" />
 
@@ -65,7 +65,7 @@ export default function Dossier() {
       {/* The open book */}
       <div className="relative z-10 flex min-h-[calc(100vh-120px)] items-start justify-center px-6 pb-20 pt-2 animate-fade-in">
         <div className="relative flex h-[780px] w-[940px] shrink-0 shadow-page">
-          {/* Left page — fixed spread height; inner scroll when content overflows. */}
+          {/* Left page, fixed spread height; inner scroll when content overflows. */}
           <section className="paper relative flex h-full w-1/2 flex-col rounded-l-[3px] py-12 pl-12 pr-16">
             <div className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto">
               <PalettePage />
@@ -103,7 +103,7 @@ export default function Dossier() {
             </nav>
           </section>
 
-          {/* Center spine — metallic ring binder */}
+          {/* Center spine, metallic ring binder */}
           <div className="pointer-events-none absolute inset-y-0 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center justify-center gap-7">
             <span className="absolute inset-y-4 w-px bg-ink/15" />
             {Array.from({ length: 7 }).map((_, i) => (

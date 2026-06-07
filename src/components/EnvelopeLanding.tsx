@@ -4,7 +4,7 @@ import { useAppContext } from '@/context/AppContext';
 type AuthMode = 'create' | 'access';
 
 /**
- * State 1 — The Tactical Envelope.
+ * State 1: The Tactical Envelope.
  *
  * A physical stationery artifact resting on warm ivory. Unveiling it
  * plays a flap-open animation and dissolves into a pristine paper insert
@@ -174,7 +174,7 @@ function Insert({
   onSubmit: (e: FormEvent) => void;
 }) {
   // Render hidden on first paint, then flip to visible on the next frame so
-  // the card always transitions in from its starting state — never popping
+  // the card always transitions in from its starting state, never popping
   // into view first. A double rAF guarantees the hidden frame is painted
   // before the transition is triggered.
   const [shown, setShown] = useState(false);

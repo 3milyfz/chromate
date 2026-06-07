@@ -4,7 +4,7 @@ import { SwatchPlate } from '@/components/SwatchPlate';
 import { PageHeading } from '@/components/pages/PageHeading';
 
 /**
- * Left page — 01 / Visual Canvas Archive.
+ * Left page: 01 / Visual Canvas Archive.
  * A season index on the left, the active season's aura and editorial
  * definition on the right, and its debossed signature swatch plate below.
  */

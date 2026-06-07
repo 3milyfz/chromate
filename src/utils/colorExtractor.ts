@@ -1,5 +1,5 @@
 /**
- * Chromate — Color Extraction Engine
+ * Chromate: Color Extraction Engine
  * ------------------------------------------------------------------
  * Extracts the single most dominant color from an uploaded image and
  * expresses it in the three vocabularies the platform speaks: RGB, Hex,
@@ -8,9 +8,9 @@
  * The module is split into two layers so the science is fully unit
  * testable without a browser:
  *
- *   • PURE layer — color-space math and the clustering/quantization
+ *   • PURE layer, color-space math and the clustering/quantization
  *     algorithm, operating on plain pixel arrays. No DOM required.
- *   • BROWSER layer — thin wrappers that load a `File` onto an HTML5
+ *   • BROWSER layer, thin wrappers that load a `File` onto an HTML5
  *     Canvas, downscale it, and hand the pixel buffer to the pure layer.
  */
 
@@ -52,7 +52,7 @@ export interface ExtractionOptions {
   bucketSize?: number;
   /**
    * Pixels lighter than this whose channels are near-neutral (a studio
-   * backdrop is rarely pure white — it's an off-white or light grey) are
+   * backdrop is rarely pure white, it's an off-white or light grey) are
    * treated as background even when they fall below `whiteThreshold`.
    */
   neutralLightThreshold?: number;
@@ -72,7 +72,7 @@ export interface ExtractionOptions {
   /**
    * If the segmented garment occupies less than this fraction of the frame,
    * the result is treated as unreliable and the simpler per-pixel filter is
-   * used instead — a safety net against over-segmentation.
+   * used instead, a safety net against over-segmentation.
    */
   minForegroundFraction?: number;
   /**
@@ -82,8 +82,8 @@ export interface ExtractionOptions {
    */
   solidVarianceThreshold?: number;
   /**
-   * If segmentation cannot separate a figure from its ground — i.e. it labels
-   * essentially the whole frame as one region — the image is also treated as
+   * If segmentation cannot separate a figure from its ground, i.e. it labels
+   * essentially the whole frame as one region, the image is also treated as
    * a solid color. This is that "essentially one region" fraction.
    */
   solidForegroundFraction?: number;
@@ -112,7 +112,7 @@ const DEFAULT_OPTIONS: Required<ExtractionOptions> = {
 };
 
 /* ================================================================== *
- * PURE layer — color-space math
+ * PURE layer, color-space math
  * ================================================================== */
 
 /** Clamps a number into the inclusive `[min, max]` range. */
@@ -197,13 +197,13 @@ export function rgbToHsl(r: number, g: number, b: number): HSL {
 }
 
 /* ================================================================== *
- * PURE layer — background detection & clustering
+ * PURE layer, background detection & clustering
  * ================================================================== */
 
 /**
- * Decides whether a pixel is "background noise" — transparent, a near-pure
+ * Decides whether a pixel is "background noise", transparent, a near-pure
  * white/black studio backdrop, or the light near-neutral grey that most
- * product photography actually uses — and should be skipped.
+ * product photography actually uses, and should be skipped.
  */
 export function isBackgroundPixel(
   r: number,
@@ -224,7 +224,7 @@ export function isBackgroundPixel(
     g <= options.blackThreshold &&
     b <= options.blackThreshold;
 
-  // A studio backdrop is seldom pure white — it photographs as an off-white
+  // A studio backdrop is seldom pure white, it photographs as an off-white
   // or light grey. Reject any light pixel whose channels sit close together
   // (i.e. it carries no real hue), which leaves true garment colour behind.
   const min = Math.min(r, g, b);
@@ -260,7 +260,7 @@ function colorDistance(
 
 /**
  * Estimates the backdrop color by averaging the thin frame of pixels around
- * the image edge — where a product shot's studio background lives. Returns
+ * the image edge, where a product shot's studio background lives. Returns
  * `null` if the frame is essentially transparent (a cut-out PNG).
  */
 export function sampleBorderBackground(
@@ -420,7 +420,7 @@ function keepLargestComponent(
 }
 
 /**
- * Segments the garment from its backdrop using edge-seeded region growing —
+ * Segments the garment from its backdrop using edge-seeded region growing,
  * a classic "magic-wand from the borders" technique:
  *
  *   1. Estimate the dominant backdrop color from the edge frame.
@@ -513,7 +513,7 @@ export function segmentForegroundMask(
 export interface FlatnessStats {
   /** Mean color across all opaque pixels, or `null` if none are opaque. */
   mean: RGB | null;
-  /** Combined RGB standard deviation — how much color varies across the image. */
+  /** Combined RGB standard deviation, how much color varies across the image. */
   spread: number;
   /** Number of opaque pixels considered. */
   opaqueCount: number;
@@ -589,7 +589,7 @@ function toExtractedColor(rgb: RGB): ExtractedColor {
  *
  * When the image `width`/`height` grid is supplied, it additionally samples
  * the backdrop from the edge frame, discards pixels close to it, and weights
- * central pixels more heavily — so a centred garment beats a large backdrop.
+ * central pixels more heavily, so a centred garment beats a large backdrop.
  *
  * Falls back to the mean of all foreground pixels when no cluster
  * dominates, and to neutral grey for a fully-background image.
@@ -626,7 +626,7 @@ export function extractDominantFromPixels(
 
   // Solid-color / swatch path: a flat color chip has almost no variance, or
   // segmentation finds no figure/ground separation. In that case there is no
-  // garment to isolate — classify the overall average color directly.
+  // garment to isolate, classify the overall average color directly.
   const stats = flatnessStats(data, opts);
   const totalPixels = spatial ? (width as number) * (height as number) : 0;
   const lowVariance = stats.opaqueCount > 0 && stats.spread <= opts.solidVarianceThreshold;
@@ -664,7 +664,7 @@ export function extractDominantFromPixels(
       continue;
     }
 
-    // Favor centred pixels — the garment is framed in the middle.
+    // Favor centred pixels, the garment is framed in the middle.
     let weight = 1;
     if (spatial) {
       const px = p % (width as number);
@@ -736,7 +736,7 @@ export function extractDominantFromPixels(
 }
 
 /* ================================================================== *
- * BROWSER layer — File → Canvas → pixels
+ * BROWSER layer: File → Canvas → pixels
  * ================================================================== */
 
 /** Loads an image `File`/`Blob` into a decoded `HTMLImageElement`. */

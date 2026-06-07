@@ -23,7 +23,7 @@ function readAsDataUrl(file: File): Promise<string> {
 }
 
 /**
- * Right page — 02 / The Scanner File.
+ * Right page: 02 / The Scanner File.
  * A vellum drop zone, a pinned polaroid of the upload, the scientific
  * verdict matrix, the friendly verdict, and the compiling closet row.
  */
@@ -81,7 +81,7 @@ export default function ScannerPage() {
     <div className="flex h-full flex-col">
       <PageHeading index="02" title="The Scanner File" />
 
-      {/* Drop zone — vellum sheet clipped over the page */}
+      {/* Drop zone, vellum sheet clipped over the page */}
       <div className="relative mt-10">
         <span className="absolute -top-3 left-10 z-20 h-7 w-7 rounded-full border border-stone/50" style={{ clipPath: 'inset(0 0 50% 0)' }} aria-hidden />
         <div
@@ -149,7 +149,7 @@ export default function ScannerPage() {
             </figcaption>
           </figure>
 
-          {/* Minimal verdict — palette + match */}
+          {/* Minimal verdict, palette + match */}
           <div>
             <p className="caption text-stone">Reads as</p>
             <p className="mt-1 font-serif text-3xl font-light leading-tight text-espresso">
