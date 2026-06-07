@@ -26,14 +26,14 @@
 
 ## Manifesto
 
-**Chromate** is an avant-garde seasonal color analysis studio. It treats your personal palette not as a quiz result, but as a compiled dossier, a leather-bound archive of the tones that belong to you, the ones that don't, and the garments you scan against both.
+**Chromate** is an avant-garde seasonal color analysis studio. It treats your personal palette as a compiled dossier, a leather-bound archive of the tones that belong to you and the ones that don't.
 
 ---
 
 ## Features
 
 ### Your Palette
-A visual canvas archive for each confirmed season, aura description, dominant traits, and a debossed signature swatch plate of six curated tones. Switch between seasons from a left-page index.
+A visual canvas archive for each confirmed season, aura description, dominant traits, and a debossed signature swatch plate of six curated tones. Switch between your seasons from a left-page index.
 
 ### Scanner File
 Drop an image of any color or garment onto a vellum zone. Chromate extracts the dominant color via canvas-based clustering, then runs it through a three-axis seasonal filter:
