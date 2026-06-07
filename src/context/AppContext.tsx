@@ -46,10 +46,29 @@ export interface VirtualClosetItem {
   capturedAt: string;
 }
 
+/**
+ * A mock authenticated session. Chromate's auth is intentionally a
+ * façade for the prototype — enough to gate the dossier and persist
+ * across reloads, without any real credential handling.
+ */
+export interface UserSession {
+  /** The email the file was created/accessed under. */
+  email: string;
+  /** ISO-8601 timestamp of when the archive was opened. */
+  openedAt: string;
+}
+
 /** The complete, serializable global state of Chromate. */
 export interface AppState {
-  /** The user's analyzed season id, or `null` before analysis. */
+  /** The active mock session, or `null` when the archive is sealed. */
+  session: UserSession | null;
+  /** The season id currently in focus in the dossier, or `null` before analysis. */
   currentSeason: string | null;
+  /**
+   * The user's confirmed "best" seasons (one or more), by id, captured
+   * during onboarding. `currentSeason` is, by convention, the first of these.
+   */
+  seasons: string[];
   /** Preferred luxury / minimalist houses, by name. */
   favoriteBrands: string[];
   /** Every garment the user has scanned into their canvas. */
@@ -61,11 +80,15 @@ export interface AppState {
  * ------------------------------------------------------------------ */
 
 /**
- * Initial state. `currentSeason` defaults to `dark_autumn` so the
- * prototype layout always renders against a real palette.
+ * Initial state. `currentSeason` is deliberately `null` so that a freshly
+ * authenticated user is routed through the seasonal onboarding (State 2)
+ * before the dossier is ever compiled. Once a season is confirmed there,
+ * it persists and the onboarding is skipped on subsequent sessions.
  */
 const DEFAULT_STATE: AppState = {
-  currentSeason: 'dark_autumn',
+  session: null,
+  currentSeason: null,
+  seasons: [],
   favoriteBrands: ['Merit', 'The Row', 'Jil Sander', 'LEMAIRE'],
   virtualCloset: [],
 };
@@ -83,12 +106,40 @@ function loadState(): AppState {
 
     const parsed = JSON.parse(raw) as Partial<AppState>;
 
+    const rawCurrent =
+      parsed.currentSeason === null || typeof parsed.currentSeason === 'string'
+        ? parsed.currentSeason ?? null
+        : DEFAULT_STATE.currentSeason;
+
+    // `seasons` is newer than `currentSeason`; if it is absent, derive it
+    // from the legacy single-season field so older sessions still resolve.
+    const seasons = Array.isArray(parsed.seasons)
+      ? parsed.seasons.filter((s): s is string => typeof s === 'string')
+      : rawCurrent
+        ? [rawCurrent]
+        : DEFAULT_STATE.seasons;
+
+    // The active/primary season drives the single-season editorial pages.
+    // Keep it coherent with the confirmed set: fall back to the first
+    // selected season when the stored primary is missing or stale.
+    const currentSeason =
+      rawCurrent && seasons.includes(rawCurrent)
+        ? rawCurrent
+        : seasons.length > 0
+          ? seasons[0]
+          : null;
+
     // Merge defensively: a stored shape may predate newer fields.
     return {
-      currentSeason:
-        parsed.currentSeason === null || typeof parsed.currentSeason === 'string'
-          ? parsed.currentSeason
-          : DEFAULT_STATE.currentSeason,
+      session:
+        parsed.session && typeof parsed.session.email === 'string'
+          ? {
+              email: parsed.session.email,
+              openedAt: parsed.session.openedAt ?? new Date().toISOString(),
+            }
+          : DEFAULT_STATE.session,
+      currentSeason,
+      seasons,
       favoriteBrands: Array.isArray(parsed.favoriteBrands)
         ? parsed.favoriteBrands
         : DEFAULT_STATE.favoriteBrands,
@@ -108,8 +159,18 @@ function loadState(): AppState {
 
 /** The public API exposed to every consumer of the canvas context. */
 export interface AppContextValue extends AppState {
+  /** Convenience flag — true when a session is open. */
+  isAuthenticated: boolean;
+  /** Open the archive under an email (mock sign-up / login). */
+  login: (email: string) => void;
+  /** Seal the archive and clear the session. */
+  logout: () => void;
+
   /** Set (or clear, with `null`) the user's analyzed season. */
   setCurrentSeason: (seasonId: string | null) => void;
+
+  /** Replace the user's confirmed set of best seasons. */
+  setSeasons: (seasonIds: string[]) => void;
 
   /** Add a luxury house to favorites (no-op if already present). */
   addFavoriteBrand: (brand: string) => void;
@@ -176,8 +237,25 @@ export function AppProvider({ children }: AppProviderProps) {
     }
   }, [state]);
 
+  const login = useCallback((email: string) => {
+    const trimmed = email.trim();
+    if (!trimmed) return;
+    setState((prev) => ({
+      ...prev,
+      session: { email: trimmed, openedAt: new Date().toISOString() },
+    }));
+  }, []);
+
+  const logout = useCallback(() => {
+    setState((prev) => ({ ...prev, session: null }));
+  }, []);
+
   const setCurrentSeason = useCallback((seasonId: string | null) => {
     setState((prev) => ({ ...prev, currentSeason: seasonId }));
+  }, []);
+
+  const setSeasons = useCallback((seasonIds: string[]) => {
+    setState((prev) => ({ ...prev, seasons: seasonIds }));
   }, []);
 
   const addFavoriteBrand = useCallback((brand: string) => {
@@ -235,7 +313,11 @@ export function AppProvider({ children }: AppProviderProps) {
   const value = useMemo<AppContextValue>(
     () => ({
       ...state,
+      isAuthenticated: state.session !== null,
+      login,
+      logout,
       setCurrentSeason,
+      setSeasons,
       addFavoriteBrand,
       removeFavoriteBrand,
       setFavoriteBrands,
@@ -246,7 +328,10 @@ export function AppProvider({ children }: AppProviderProps) {
     }),
     [
       state,
+      login,
+      logout,
       setCurrentSeason,
+      setSeasons,
       addFavoriteBrand,
       removeFavoriteBrand,
       setFavoriteBrands,

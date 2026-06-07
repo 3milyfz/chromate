@@ -30,7 +30,7 @@ const DARK_AUTUMN: SeasonalPalette = {
   id: 'dark_autumn',
   name: 'Dark Autumn',
   auraDescription:
-    'A low, banked fire. Espresso hair and umber eyes set against skin with warm depth, the contrast smoldering rather than sharp. The presence is unhurried and opulent — candlelight caught in dark amber.',
+    'Deep, warm coloring — dark hair and eyes against skin with golden warmth. Rich and low-contrast.',
   dominantTrait: 'dark',
   secondaryTrait: 'Warm undertone with high tonal depth',
   boundaries: {
@@ -58,7 +58,7 @@ const TRUE_AUTUMN: SeasonalPalette = {
   id: 'true_autumn',
   name: 'True Autumn',
   auraDescription:
-    'The season at full pour. Auburn and chestnut hair, eyes of moss and topaz, skin lit with a golden interior glow. Warmth is the entire architecture here — sun-cured, mellow, and quietly luxurious.',
+    'The warmest, richest season. Auburn hair, green or topaz eyes, and skin with a golden glow. Earthy and saturated.',
   dominantTrait: 'warm',
   secondaryTrait: 'Rich, medium-depth saturation',
   boundaries: {
@@ -86,7 +86,7 @@ const WARM_AUTUMN: SeasonalPalette = {
   id: 'warm_autumn',
   name: 'Warm Autumn',
   auraDescription:
-    'Honeyed and sunlit-from-within. Golden-brown hair, hazel and amber eyes, skin that reads like warm sand. The warmest of the warm — relaxed, radiant, and effortlessly expensive.',
+    'Soft, golden warmth. Golden-brown hair, hazel eyes, and warm, sun-touched skin. The most relaxed of the warm seasons.',
   dominantTrait: 'warm',
   secondaryTrait: 'Golden, medium-light radiance',
   boundaries: {
@@ -118,7 +118,7 @@ const BRIGHT_SPRING: SeasonalPalette = {
   id: 'bright_spring',
   name: 'Bright Spring',
   auraDescription:
-    'A struck match of color. Warm vivid eyes, hair with golden glint, skin that holds clear light. Contrast is high and joyful — every hue arrives polished, electric, and unapologetically alive.',
+    'Warm and high-contrast. Bright eyes, hair with a golden glint, and skin that holds light. Best in clear, vivid color.',
   dominantTrait: 'bright',
   secondaryTrait: 'Warm, high-clarity contrast',
   boundaries: {
@@ -146,7 +146,7 @@ const TRUE_SPRING: SeasonalPalette = {
   id: 'true_spring',
   name: 'True Spring',
   auraDescription:
-    'Effervescent and golden. Warm bright eyes, hair with copper-honey light, a complexion that seems lit from a low morning sun. The energy is buoyant, fresh, and finely lacquered.',
+    'Warm and golden, with clear, sunlit coloring. Copper-honey hair and bright eyes. Fresh and lively.',
   dominantTrait: 'warm',
   secondaryTrait: 'Clear, sunlit saturation',
   boundaries: {
@@ -174,7 +174,7 @@ const LIGHT_SPRING: SeasonalPalette = {
   id: 'light_spring',
   name: 'Light Spring',
   auraDescription:
-    'Sheer and sunlit. Pale-golden hair, light warm eyes, skin like cream catching first light. Everything is delicate and luminous — a watercolor wash with the faintest gold beneath.',
+    'Light, warm, and delicate. Pale-golden hair, light eyes, and fair skin. Best in soft, sunlit color.',
   dominantTrait: 'light',
   secondaryTrait: 'Warm, low-contrast luminosity',
   boundaries: {
@@ -206,7 +206,7 @@ const SOFT_SUMMER: SeasonalPalette = {
   id: 'soft_summer',
   name: 'Soft Summer',
   auraDescription:
-    'A pearl seen through mist. Ash-toned hair, soft cool eyes, skin with a quiet rose-grey veil. Nothing is loud — the contrast is blurred and the whole presence reads as composed, hushed, and refined.',
+    'Cool and muted, with low contrast. Ashy hair, soft eyes, and skin with a rose-grey tone. Best in gentle, hazy color.',
   dominantTrait: 'muted',
   secondaryTrait: 'Cool undertone with low contrast',
   boundaries: {
@@ -234,7 +234,7 @@ const TRUE_SUMMER: SeasonalPalette = {
   id: 'true_summer',
   name: 'True Summer',
   auraDescription:
-    'Cool water in shade. Cool-brown to ashen hair, eyes of soft grey-blue, skin with a blue-rose undertone. Elegant and tonal, the presence carries the calm of slate and the gloss of a wet stone.',
+    'Cool and soft. Ash-brown hair, grey-blue eyes, and skin with a cool undertone. Best in calm, blue-based tones.',
   dominantTrait: 'cool',
   secondaryTrait: 'Blue-based, medium softness',
   boundaries: {
@@ -262,7 +262,7 @@ const LIGHT_SUMMER: SeasonalPalette = {
   id: 'light_summer',
   name: 'Light Summer',
   auraDescription:
-    'Dawn through gauze. Light ashen hair, gentle cool eyes, skin with a cool translucent glow. The contrast is feather-soft and the entire essence floats — silver light over still water.',
+    'Light and cool, with soft contrast. Ashy hair, gentle eyes, and cool, fair skin. Best in pale, airy color.',
   dominantTrait: 'light',
   secondaryTrait: 'Cool, delicate low-contrast tints',
   boundaries: {
@@ -294,7 +294,7 @@ const DARK_WINTER: SeasonalPalette = {
   id: 'dark_winter',
   name: 'Dark Winter',
   auraDescription:
-    'Obsidian under starlight. Near-black hair, cool deep eyes, skin with porcelain-cool depth. The contrast is dramatic and exact — a presence of polished jet, sapphire and the crisp edge of midnight.',
+    'Deep and cool, with sharp contrast. Near-black hair, cool eyes, and cool-toned skin. Best in dark, dramatic color.',
   dominantTrait: 'dark',
   secondaryTrait: 'Cool undertone with sharp, high contrast',
   boundaries: {
@@ -322,7 +322,7 @@ const TRUE_WINTER: SeasonalPalette = {
   id: 'true_winter',
   name: 'True Winter',
   auraDescription:
-    'Cut crystal at noon. Cool dark hair, clear icy eyes, skin with a luminous blue-cool clarity. The contrast is precise and jewel-like — every color reads as faceted, saturated, and impeccably clean.',
+    'Cool and clear, with high contrast. Dark hair, bright eyes, and cool skin. Best in saturated, jewel-clean color.',
   dominantTrait: 'cool',
   secondaryTrait: 'Blue-based, saturated and clear',
   boundaries: {
@@ -350,7 +350,7 @@ const BRIGHT_WINTER: SeasonalPalette = {
   id: 'bright_winter',
   name: 'Bright Winter',
   auraDescription:
-    'A diamond against velvet. Dark glossy hair, brilliant cool eyes, skin of clear porcelain contrast. The presence is electric yet icy — saturated jewel tones snapping against crisp, frozen brightness.',
+    'Cool and vivid, with striking contrast. Dark hair, bright eyes, and clear skin. Best in bold, icy-bright color.',
   dominantTrait: 'bright',
   secondaryTrait: 'Cool, vivid, ultra-high clarity',
   boundaries: {

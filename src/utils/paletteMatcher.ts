@@ -40,6 +40,10 @@ export interface SeasonAnalysis {
   matchScore: number;
   /** Pass/fail for each scientific axis. */
   breakdown: AnalysisBreakdown;
+  /** The season this color most naturally belongs to, across all twelve. */
+  classifiedSeasonId: string;
+  /** Display name of {@link classifiedSeasonId}, e.g. `Dark Autumn`. */
+  classifiedSeasonName: string;
   /** A specific, friendly explanation of the outcome. */
   customTextVerdict: string;
 }
@@ -118,6 +122,18 @@ function isTeal(h: number): boolean {
   return h >= 160 && h <= 210;
 }
 
+/**
+ * Earthy red-browns, rusts and brick tones sit right on the red wrap-around
+ * (hues near 0° / 360°). At low-to-moderate saturation these are warm browns
+ * — they belong to the warm families (Autumn, Spring), not the cool reds and
+ * berries. Capping saturation keeps vivid cool fuchsias and pure reds out, so
+ * genuinely cool colors are unaffected.
+ */
+function isWarmRedBrown(h: number, s: number): boolean {
+  const nearRed = h >= 340 || h <= 25;
+  return nearRed && s <= 60;
+}
+
 /* ------------------------------------------------------------------ *
  * Per-axis evaluation
  * ------------------------------------------------------------------ */
@@ -147,16 +163,28 @@ function evaluateHue(
   const coolZone = h >= 130 && h <= 320;
   const inTemperatureZone = temperature === 'warm' ? warmZone : coolZone;
 
+  // Red wrap-around earth-tones (low-to-moderate saturation) are warm: they
+  // belong to the warm families. This makes the warm/Autumn hue handling
+  // robust right across the 360°→0° seam, where naive linear windows leave a
+  // gap, without admitting saturated cool reds.
   const exception =
     (family === 'autumn' && (isOliveGreen(h, s) || isTeal(h))) ||
-    (family === 'winter' && isTeal(h));
+    (family === 'winter' && isTeal(h)) ||
+    (temperature === 'warm' && isWarmRedBrown(h, s));
 
   const pass = withinWindow || inTemperatureZone || exception;
 
-  // Proximity is measured against the window; exception passes that fall
-  // outside the window still earn a modest floor so the score stays fair.
+  // Proximity is measured against the window. Out-of-window passes score by
+  // their circular distance to the nearest window edge (fairer for wrap-around
+  // browns than distance-to-center), with a modest floor so they stay fair.
   const baseProximity = axisProximity(hueDistance(h, center(hue)), hue);
-  const proximity = withinWindow ? baseProximity : Math.max(baseProximity, pass ? 0.45 : 0);
+  const edgeDistance = Math.min(hueDistance(h, hue.min), hueDistance(h, hue.max));
+  const edgeProximity = axisProximity(edgeDistance, hue);
+  const proximity = withinWindow
+    ? baseProximity
+    : pass
+      ? Math.max(baseProximity, edgeProximity, 0.45)
+      : baseProximity;
 
   return { pass, proximity };
 }
@@ -313,6 +341,35 @@ function craftNearMissVerdict(
 }
 
 /* ------------------------------------------------------------------ *
+ * Multi-season result shape
+ * ------------------------------------------------------------------ */
+
+/**
+ * The outcome of testing one color against a *set* of selected seasons —
+ * the user may belong to more than one. A color is a match if it fits ANY
+ * of them.
+ */
+export interface MultiSeasonAnalysis {
+  /** True when the color passes at least one of the selected seasons. */
+  isMatch: boolean;
+  /** Ids of every selected season the color genuinely fits (may be empty). */
+  matchedSeasonIds: string[];
+  /**
+   * The strongest selected season for this color — the matched season with
+   * the highest score, or (if none match) the closest selected season.
+   */
+  bestSeasonId: string | null;
+  /** Display name of {@link bestSeasonId}, e.g. `Dark Autumn`. */
+  bestSeasonName: string | null;
+  /** Best proximity score across the selected seasons, `0 – 100`. */
+  matchScore: number;
+  /** The season the color most naturally belongs to, across all twelve. */
+  classifiedSeasonId: string;
+  /** Display name of {@link classifiedSeasonId}. */
+  classifiedSeasonName: string;
+}
+
+/* ------------------------------------------------------------------ *
  * Public API
  * ------------------------------------------------------------------ */
 
@@ -340,6 +397,7 @@ export function analyzeColorAgainstSeason(
 
   const core = evaluate(h, s, l, season);
   const color = describeColor(h, colorName);
+  const classified = findBestSeason(h, s, l);
 
   const customTextVerdict = core.isMatch
     ? craftMatchVerdict(color, season)
@@ -350,6 +408,79 @@ export function analyzeColorAgainstSeason(
     isMatch: core.isMatch,
     matchScore: core.matchScore,
     breakdown: core.breakdown,
+    classifiedSeasonId: classified.id,
+    classifiedSeasonName: classified.name,
     customTextVerdict,
+  };
+}
+
+/**
+ * Analyze a measured HSL color against a *set* of selected seasons.
+ *
+ * The color counts as a match if it fits ANY of the selected seasons. The
+ * result reports which selected seasons it matched, the strongest of them,
+ * and — independently — the season it most naturally belongs to overall.
+ *
+ * Unknown ids are ignored. An empty (or fully-unknown) selection yields a
+ * non-match whose `classified*` fields still describe the color's home
+ * season, so callers always have something meaningful to show.
+ *
+ * @param h           Hue, `0 – 360`.
+ * @param s           Saturation, `0 – 100`.
+ * @param l           Lightness, `0 – 100`.
+ * @param seasonIds   Keys of `SEASONS_MATRIX` the user has selected.
+ */
+export function analyzeColorAgainstSeasons(
+  h: number,
+  s: number,
+  l: number,
+  seasonIds: string[],
+): MultiSeasonAnalysis {
+  const classified = findBestSeason(h, s, l);
+
+  const matchedSeasonIds: string[] = [];
+  let best: { id: string; name: string; score: number; isMatch: boolean } | null =
+    null;
+
+  for (const id of seasonIds) {
+    const season = SEASONS_MATRIX[id];
+    if (!season) continue;
+
+    const core = evaluate(h, s, l, season);
+
+    // A color matches a selected season when it either passes that season's
+    // strict HSL boundaries OR is classified as belonging to it (its "home").
+    // The latter keeps the verdict self-consistent: a color that "reads as
+    // Dark Autumn" must report a match when Dark Autumn is selected, even if
+    // it brushes a boundary on one axis.
+    const isClassifiedHome = season.id === classified.id;
+    const matched = core.isMatch || isClassifiedHome;
+    if (matched && !matchedSeasonIds.includes(season.id)) {
+      matchedSeasonIds.push(season.id);
+    }
+
+    // Rank matched seasons ahead of non-matches, then by proximity score.
+    const better =
+      best === null ||
+      (matched && !best.isMatch) ||
+      (matched === best.isMatch && core.matchScore > best.score);
+    if (better) {
+      best = {
+        id: season.id,
+        name: season.name,
+        score: core.matchScore,
+        isMatch: matched,
+      };
+    }
+  }
+
+  return {
+    isMatch: matchedSeasonIds.length > 0,
+    matchedSeasonIds,
+    bestSeasonId: best?.id ?? null,
+    bestSeasonName: best?.name ?? null,
+    matchScore: best?.score ?? 0,
+    classifiedSeasonId: classified.id,
+    classifiedSeasonName: classified.name,
   };
 }

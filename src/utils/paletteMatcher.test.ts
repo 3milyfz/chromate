@@ -1,5 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { analyzeColorAgainstSeason } from '@/utils/paletteMatcher';
+import {
+  analyzeColorAgainstSeason,
+  analyzeColorAgainstSeasons,
+} from '@/utils/paletteMatcher';
 import { SEASONS_MATRIX } from '@/data/seasons';
 
 describe('analyzeColorAgainstSeason — validation', () => {
@@ -75,6 +78,96 @@ describe('analyzeColorAgainstSeason — near misses', () => {
     const result = analyzeColorAgainstSeason(35, 95, 75, 'soft_summer');
     expect(result.isMatch).toBe(false);
     expect(result.matchScore).toBeLessThan(50);
+  });
+});
+
+describe('analyzeColorAgainstSeasons — match any of several', () => {
+  it('matches when the color fits ANY selected season', () => {
+    // A deep cool jewel tone: fails Dark Autumn (warm) but fits Dark Winter.
+    const result = analyzeColorAgainstSeasons(250, 70, 30, [
+      'dark_autumn',
+      'dark_winter',
+    ]);
+    expect(result.isMatch).toBe(true);
+    expect(result.matchedSeasonIds).toContain('dark_winter');
+    expect(result.matchedSeasonIds).not.toContain('dark_autumn');
+    expect(result.bestSeasonId).toBe('dark_winter');
+  });
+
+  it('reports no match when the color fits none of the selected seasons', () => {
+    // Light, cool, muted — wrong for both deep selections.
+    const result = analyzeColorAgainstSeasons(220, 25, 80, [
+      'dark_autumn',
+      'dark_winter',
+    ]);
+    expect(result.isMatch).toBe(false);
+    expect(result.matchedSeasonIds).toHaveLength(0);
+    // Even without a match, it still names a closest selected + classified home.
+    expect(result.bestSeasonId).not.toBeNull();
+    expect(result.classifiedSeasonId).toBeTruthy();
+  });
+
+  it('can match more than one selected season at once', () => {
+    // A center-of-Dark-Autumn brown, with Dark Autumn among the picks.
+    const result = analyzeColorAgainstSeasons(40, 43, 30, [
+      'dark_autumn',
+      'true_autumn',
+    ]);
+    expect(result.isMatch).toBe(true);
+    expect(result.matchedSeasonIds).toContain('dark_autumn');
+  });
+
+  it('matches when the classified home season is selected, even near a boundary', () => {
+    // A warm near-red brown (~#453130): h≈3, s≈18, l≈23. It brushes Dark
+    // Autumn's saturation floor, so it FAILS the strict single-season test…
+    const strict = analyzeColorAgainstSeason(3, 18, 23, 'dark_autumn');
+    expect(strict.isMatch).toBe(false);
+    expect(strict.classifiedSeasonId).toBe('dark_autumn');
+
+    // …yet because it "reads as" Dark Autumn and Dark Autumn is selected, the
+    // multi-season verdict reports a consistent match (no contradiction).
+    const result = analyzeColorAgainstSeasons(3, 18, 23, ['dark_autumn']);
+    expect(result.classifiedSeasonId).toBe('dark_autumn');
+    expect(result.isMatch).toBe(true);
+    expect(result.matchedSeasonIds).toContain('dark_autumn');
+    expect(result.bestSeasonId).toBe('dark_autumn');
+    expect(result.bestSeasonName).toBe('Dark Autumn');
+  });
+
+  it('classifies warm near-red browns as Dark Autumn and matches them', () => {
+    // Two real-world swatches the user hit: #453130 and #391213.
+    for (const [h, s, l] of [
+      [3, 18, 23], // #453130 — fails saturation floor, matches via classification
+      [358, 52, 15], // #391213 — passes Dark Autumn's boundaries outright
+    ] as const) {
+      const result = analyzeColorAgainstSeasons(h, s, l, ['dark_autumn']);
+      expect(result.classifiedSeasonId).toBe('dark_autumn');
+      expect(result.isMatch).toBe(true);
+      expect(result.matchedSeasonIds).toContain('dark_autumn');
+    }
+  });
+
+  it('still rejects a genuinely cool color against Autumn selections', () => {
+    // Cool, muted, medium color — its home is a cool season, not Autumn.
+    const result = analyzeColorAgainstSeasons(220, 30, 50, [
+      'dark_autumn',
+      'true_autumn',
+    ]);
+    expect(result.isMatch).toBe(false);
+    expect(result.matchedSeasonIds).toHaveLength(0);
+    expect(result.classifiedSeasonId).not.toBe('dark_autumn');
+    expect(result.classifiedSeasonId).not.toBe('true_autumn');
+  });
+
+  it('ignores unknown ids and handles an empty selection gracefully', () => {
+    const empty = analyzeColorAgainstSeasons(40, 43, 30, []);
+    expect(empty.isMatch).toBe(false);
+    expect(empty.matchedSeasonIds).toHaveLength(0);
+    expect(empty.classifiedSeasonName).toBeTruthy();
+
+    const unknown = analyzeColorAgainstSeasons(40, 43, 30, ['nope', 'dark_autumn']);
+    expect(unknown.isMatch).toBe(true);
+    expect(unknown.matchedSeasonIds).toEqual(['dark_autumn']);
   });
 });
 
