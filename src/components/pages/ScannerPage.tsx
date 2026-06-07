@@ -97,7 +97,7 @@ export default function ScannerPage() {
           }`}
         >
           <p className="font-sans text-[11px] font-light uppercase tracking-[0.2em] text-ash">
-            {busy ? 'Reading color…' : 'Drop a clothing or product image to scan.'}
+            {busy ? 'Reading color…' : 'Drop a color or clothing image to scan.'}
           </p>
         </div>
         <input

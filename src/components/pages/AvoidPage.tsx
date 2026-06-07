@@ -25,7 +25,7 @@ export default function AvoidPage() {
       <PageHeading index="01" title="Palette Notes" />
 
       <p className="mt-9 max-w-md text-justify font-serif text-[17px] font-light italic leading-relaxed text-ink">
-        These shades work against {season.name}. Keep them away from your face.
+        These shades work against {season.name}.
       </p>
 
       <section className="mt-12">
