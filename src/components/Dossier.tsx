@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAppContext } from '@/context/AppContext';
+import SeasonBackdrop from '@/components/SeasonBackdrop';
 import PalettePage from '@/components/pages/PalettePage';
 import ScannerPage from '@/components/pages/ScannerPage';
 import MakeupPage from '@/components/pages/MakeupPage';
@@ -21,7 +22,7 @@ const TABS: { key: TabKey; index: string; label: string }[] = [
  * the Visual Canvas Archive; the right page is driven by the index tabs.
  */
 export default function Dossier() {
-  const { session, logout } = useAppContext();
+  const { session, logout, seasons, currentSeason } = useAppContext();
   const [active, setActive] = useState<TabKey>('scanner');
 
   const rightPage = {
@@ -32,9 +33,16 @@ export default function Dossier() {
   }[active];
 
   return (
-    <main className="leather min-h-screen w-full overflow-x-auto">
+    <main className="relative min-h-screen w-full overflow-x-auto bg-espresso">
+      {/* Season-aesthetic mood image(s) behind a frosted-glass overlay. */}
+      <SeasonBackdrop seasons={seasons} activeSeason={currentSeason} />
+
+      {/* Top scrim — keeps the light linen top-bar text readable on any
+          overlay, including the airy washes used for light/cool seasons. */}
+      <div className="pointer-events-none fixed inset-x-0 top-0 z-0 h-32 bg-gradient-to-b from-espresso/55 to-transparent" />
+
       {/* Top bar */}
-      <div className="flex items-center justify-between px-8 py-6">
+      <div className="relative z-10 flex items-center justify-between px-8 py-6">
         <span className="font-serif text-lg font-light uppercase tracking-editorial text-linen/90">
           Chromate
         </span>
@@ -55,17 +63,21 @@ export default function Dossier() {
       </div>
 
       {/* The open book */}
-      <div className="flex min-h-[calc(100vh-120px)] items-start justify-center px-6 pb-20 pt-2 animate-fade-in">
-        <div className="relative flex w-[940px] shrink-0 shadow-page">
-          {/* Left page */}
-          <section className="paper relative min-h-[780px] w-1/2 rounded-l-[3px] py-12 pl-12 pr-16">
-            <PalettePage />
+      <div className="relative z-10 flex min-h-[calc(100vh-120px)] items-start justify-center px-6 pb-20 pt-2 animate-fade-in">
+        <div className="relative flex h-[780px] w-[940px] shrink-0 shadow-page">
+          {/* Left page — fixed spread height; inner scroll when content overflows. */}
+          <section className="paper relative flex h-full w-1/2 flex-col rounded-l-[3px] py-12 pl-12 pr-16">
+            <div className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto">
+              <PalettePage />
+            </div>
           </section>
 
           {/* Right page */}
-          <section className="paper relative min-h-[780px] w-1/2 rounded-r-[3px] py-12 pl-16 pr-12">
+          <section className="paper relative flex h-full w-1/2 flex-col rounded-r-[3px] py-12 pl-16 pr-12">
             <span className="pointer-events-none absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-ink/10 to-transparent" />
-            <div key={active} className="animate-fade-in">{rightPage}</div>
+            <div key={active} className="animate-fade-in flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto">
+              {rightPage}
+            </div>
 
             {/* Right-edge index tabs */}
             <nav className="absolute right-0 top-16 z-30 flex translate-x-full flex-col gap-2">
